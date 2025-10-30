@@ -1,13 +1,20 @@
 ﻿namespace HseBank.src.Domain.Entities
 {
-    public class BankAccount
+    public class BankAccount : EntityBase
     {
-        private Guid _id;
         private string _name;
         private decimal _balance;
 
-        public Guid Id => _id;
-        public string Name { get => _name; set => throw new NotImplementedException(); }
-        public decimal Balance { get => _balance; set => throw new NotImplementedException(); }
+        public BankAccount(Guid id, string name, decimal balance)
+        {
+            Id = id;
+            _name = name;
+            _balance = balance;
+        }
+
+        public string Name => _name;
+        public decimal Balance => _balance;
+
+        public void UpdateBalance(decimal delta) { _balance += delta; }
     }
 }

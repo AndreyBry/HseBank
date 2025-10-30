@@ -2,14 +2,19 @@
 
 namespace HseBank.src.Domain.Entities
 {
-    public class Category
+    public class Category : EntityBase
     {
-        private Guid _id;
         private TransactionType _type;
         private string _name;
 
-        public Guid Id => _id;
-        public TransactionType Type { get => _type; set => _type = value; }
-        public string Name { get => _name; set => _name = value; }
+        public Category(Guid id, TransactionType type, string name)
+        {
+            Id = id;
+            _type = type;
+            _name = name;
+        }
+
+        public TransactionType Type => _type;
+        public string Name => _name;
     }
 }

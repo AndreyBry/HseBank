@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="src\Infrastructure\Factories\" />
     <Folder Include="src\Infrastructure\Export\" />
     <Folder Include="src\Infrastructure\Import\" />
     <Folder Include="src\Infrastructure\Commands\" />

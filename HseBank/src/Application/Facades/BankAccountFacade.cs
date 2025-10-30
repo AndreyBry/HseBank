@@ -1,6 +1,6 @@
 ﻿namespace HseBank.src.Application.Facades
 {
-    public class AccountFacade
+    public class BankAccountFacade
     {
 
     }

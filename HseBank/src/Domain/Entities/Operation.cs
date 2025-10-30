@@ -2,22 +2,31 @@
 
 namespace HseBank.src.Domain.Entities
 {
-    public class Operation
+    public class Operation : EntityBase
     {
-        private Guid _id;
-        private Guid _bank_account_id;
         private TransactionType _type;
-        private Guid _category_id;
+        private Guid _bankAccountId;
         private decimal _amount;
         private DateTime _date;
         private string? _description;
+        private Guid _categoryId;
 
-        public Guid Id => _id;
-        public Guid BankAccountId => _bank_account_id; 
+        public Operation(Guid id, TransactionType type, Guid bankAccountId, decimal amount, DateTime date, Guid categoryId, string? description)
+        {
+            Id = id;
+            _type = type;
+            _bankAccountId = bankAccountId;
+            _amount = amount;
+            _date = date;
+            _description = description;
+            _categoryId = categoryId;
+        }
+
         public TransactionType Type => _type;
-        public Guid CategoryId => _category_id;
+        public Guid BankAccountId => _bankAccountId;
         public decimal Amount => _amount;
         public DateTime Date => _date;
         public string? Description => _description;
+        public Guid CategoryId => _categoryId;
     }
 }
