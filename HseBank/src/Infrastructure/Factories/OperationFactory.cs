@@ -1,7 +1,8 @@
-﻿using HseBank.src.Domain.DTOs;
-using HseBank.src.Domain.Entities;
+﻿using HseBank.src.Domain.Entities;
+using HseBank.src.Domain.Exceptions;
 using HseBank.src.Domain.Interfaces.Factories;
 using HseBank.src.Domain.Interfaces.Services;
+using HseBank.src.Domain.Models.DTOs;
 
 namespace HseBank.src.Infrastructure.Factories
 {
@@ -14,15 +15,15 @@ namespace HseBank.src.Infrastructure.Factories
             _operationValidator = operationValidator;
         }
 
-        public Operation Create(OperationCreateRequest request)
+        public Operation Create(OperationApplyRequest request)
         {
             if (request.amount <= 0)
             {
-                throw new ArgumentException("Сумма операции должна быть положительным числом.");
+                throw new ValidationException("Сумма операции должна быть положительным числом.");
             }
             if (request.description?.Length > 50)
             {
-                throw new ArgumentException("Описание операции может содержать максимум 50 символов.");
+                throw new ValidationException("Описание операции может содержать максимум 50 символов.");
             }
             _operationValidator.Validate(request);
             Guid id = Guid.NewGuid();

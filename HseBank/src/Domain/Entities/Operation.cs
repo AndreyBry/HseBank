@@ -13,7 +13,7 @@ namespace HseBank.src.Domain.Entities
 
         public Operation(Guid id, TransactionType type, Guid bankAccountId, decimal amount, DateTime date, Guid categoryId, string? description)
         {
-            Id = id;
+            _id = id;
             _type = type;
             _bankAccountId = bankAccountId;
             _amount = amount;

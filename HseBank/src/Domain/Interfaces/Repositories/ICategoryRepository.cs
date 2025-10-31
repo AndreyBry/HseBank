@@ -2,11 +2,8 @@
 
 namespace HseBank.src.Domain.Interfaces.Repositories
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository : IRepository<Category>
     {
-        void Add(Category category);
-        Category? GetById(Guid categoryId);
-        void Update(Category category);
-        void Delete(Category category);
+        Category? GetByName(string name);
     }
 }

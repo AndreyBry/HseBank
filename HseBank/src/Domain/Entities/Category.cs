@@ -9,12 +9,14 @@ namespace HseBank.src.Domain.Entities
 
         public Category(Guid id, TransactionType type, string name)
         {
-            Id = id;
+            _id = id;
             _type = type;
             _name = name;
         }
 
         public TransactionType Type => _type;
         public string Name => _name;
+
+        public void UpdateName(string name) { _name = name; }
     }
 }

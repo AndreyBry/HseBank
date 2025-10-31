@@ -2,11 +2,8 @@
 
 namespace HseBank.src.Domain.Interfaces.Repositories
 {
-    public interface IBankAccountRepository
+    public interface IBankAccountRepository : IRepository<BankAccount>
     {
-        void Add(BankAccount bankAccount);
-        BankAccount? GetById(Guid bankId);
-        void Update(BankAccount bankAccount);
-        void Delete(BankAccount bankAccount);
+        BankAccount? GetByName(string name);
     }
 }

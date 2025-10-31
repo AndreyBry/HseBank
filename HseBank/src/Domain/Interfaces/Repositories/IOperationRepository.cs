@@ -2,11 +2,7 @@
 
 namespace HseBank.src.Domain.Interfaces.Repositories
 {
-    public interface IOperationRepository
+    public interface IOperationRepository : IRepository<Operation>
     {
-        void Add(Operation operation);
-        Operation? GetById(Guid operationId);
-        void Update(Operation operation);
-        void Delete(Operation operation);
     }
 }

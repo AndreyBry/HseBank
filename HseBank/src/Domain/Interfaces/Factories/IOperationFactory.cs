@@ -1,10 +1,9 @@
-﻿using HseBank.src.Domain.DTOs;
-using HseBank.src.Domain.Entities;
+﻿using HseBank.src.Domain.Entities;
+using HseBank.src.Domain.Models.DTOs;
 
 namespace HseBank.src.Domain.Interfaces.Factories
 {
-    public interface IOperationFactory
+    public interface IOperationFactory : IFactory<Operation, OperationApplyRequest>
     {
-        public Operation Create(OperationCreateRequest request);
     }
 }

@@ -7,7 +7,7 @@
 
         public BankAccount(Guid id, string name, decimal balance)
         {
-            Id = id;
+            _id = id;
             _name = name;
             _balance = balance;
         }
@@ -15,6 +15,7 @@
         public string Name => _name;
         public decimal Balance => _balance;
 
+        public void UpdateName(string name) { _name = name; }
         public void UpdateBalance(decimal delta) { _balance += delta; }
     }
 }
