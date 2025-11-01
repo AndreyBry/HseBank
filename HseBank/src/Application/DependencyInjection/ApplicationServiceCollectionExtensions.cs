@@ -14,7 +14,7 @@ namespace HseBank.src.Application.DependencyInjection
             services.AddScoped<IBankAccountFacade, BankAccountFacade>();
             services.AddScoped<IOperationFacade, OperationFacade>();
             services.AddScoped<ICategoryFacade, CategoryFacade>();
-            services.AddScoped<IUndoFacade, UndoFacade>();
+            services.AddScoped<IUndoRedoFacade, UndoRedoFacade>();
 
             // Менеджер команд
             services.AddSingleton<ICommandManager, CommandManager>();

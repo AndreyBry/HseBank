@@ -1,4 +1,6 @@
-﻿using HseBank.src.Domain.Exceptions;
+﻿using HseBank.src.Domain.Entities;
+using HseBank.src.Domain.Enums;
+using HseBank.src.Domain.Exceptions;
 using HseBank.src.Domain.Interfaces.Commands;
 using HseBank.src.Domain.Interfaces.Facades;
 using HseBank.src.Domain.Interfaces.Factories;
@@ -33,12 +35,42 @@ namespace HseBank.src.Application.Facades
             catch (ValidationException ex)
             {
                 _logger.LogWarning(ex, $"Ошибка валидации при создании категории: {ex.Message}");
-                return OperationResult.Failure($"Ошибка валидации: {ex.Message}.");
+                return OperationResult.Failure($"Ошибка валидации: {ex.Message}");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Критическая ошибка при создании категории: {ex.Message}");
                 return OperationResult.Failure($"Системная ошибка: {ex.Message}");
+            }
+        }
+
+        public OperationResult<IEnumerable<Category>> GetAll()
+        {
+            var command = _commandFactory.GetAllCategoriesCommand();
+            try
+            {
+                IEnumerable<Category> categories = _commandManager.Execute(command);
+                return OperationResult<IEnumerable<Category>>.Success(categories, "Информация о категориях получена успешно.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Критическая ошибка при получении информации о категориях: {ex.Message}");
+                return OperationResult<IEnumerable<Category>>.Failure(new List<Category>(), $"Системная ошибка: {ex.Message}");
+            }
+        }
+
+        public OperationResult<IEnumerable<Category>> GetByType(TransactionType type)
+        {
+            var command = _commandFactory.GetCategoriesByTypeCommand(type);
+            try
+            {
+                IEnumerable<Category> categories = _commandManager.Execute(command);
+                return OperationResult<IEnumerable<Category>>.Success(categories, "Информация о категориях по типу получена успешно.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Критическая ошибка при получении информации о категориях по типу: {ex.Message}");
+                return OperationResult<IEnumerable<Category>>.Failure(new List<Category>(), $"Системная ошибка: {ex.Message}");
             }
         }
 
@@ -62,9 +94,9 @@ namespace HseBank.src.Application.Facades
             }
         }
 
-        public OperationResult Delete(string name)
+        public OperationResult Delete(Guid id)
         {
-            ICommand command = _commandFactory.DeleteCategoryCommand(name);
+            ICommand command = _commandFactory.DeleteCategoryCommand(id);
             try
             {
                 _commandManager.Execute(command);

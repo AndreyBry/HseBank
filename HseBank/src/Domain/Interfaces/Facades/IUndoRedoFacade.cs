@@ -2,8 +2,9 @@
 
 namespace HseBank.src.Domain.Interfaces.Facades
 {
-    public interface IUndoFacade
+    public interface IUndoRedoFacade
     {
         public OperationResult Undo();
+        public OperationResult Redo();
     }
 }

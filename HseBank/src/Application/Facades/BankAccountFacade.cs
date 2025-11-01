@@ -1,4 +1,5 @@
-﻿using HseBank.src.Domain.Exceptions;
+﻿using HseBank.src.Domain.Entities;
+using HseBank.src.Domain.Exceptions;
 using HseBank.src.Domain.Interfaces.Commands;
 using HseBank.src.Domain.Interfaces.Facades;
 using HseBank.src.Domain.Interfaces.Factories;
@@ -33,12 +34,27 @@ namespace HseBank.src.Application.Facades
             catch (ValidationException ex)
             {
                 _logger.LogWarning(ex, $"Ошибка валидации при создании счета: {ex.Message}");
-                return OperationResult.Failure($"Ошибка валидации: {ex.Message}.");
+                return OperationResult.Failure($"Ошибка валидации: {ex.Message}");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Критическая ошибка при создании счета: {ex.Message}");
                 return OperationResult.Failure($"Системная ошибка: {ex.Message}");
+            }
+        }
+
+        public OperationResult<IEnumerable<BankAccount>> GetAll()
+        {
+            var command = _commandFactory.GetAllBankAccountsCommand();
+            try
+            {
+                IEnumerable<BankAccount> accounts = _commandManager.Execute(command);
+                return OperationResult<IEnumerable<BankAccount>>.Success(accounts, "Информация о счетах получена успешно.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Критическая ошибка при получении информации о счетах: {ex.Message}");
+                return OperationResult<IEnumerable<BankAccount>>.Failure(new List<BankAccount>(), $"Системная ошибка: {ex.Message}");
             }
         }
 
@@ -62,9 +78,9 @@ namespace HseBank.src.Application.Facades
             }
         }
 
-        public OperationResult Delete(string name)
+        public OperationResult Delete(Guid id)
         {
-            ICommand command = _commandFactory.DeleteBankAccountCommand(name);
+            ICommand command = _commandFactory.DeleteBankAccountCommand(id);
             try
             {
                 _commandManager.Execute(command);

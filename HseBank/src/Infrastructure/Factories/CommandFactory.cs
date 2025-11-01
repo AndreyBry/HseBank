@@ -1,4 +1,6 @@
-﻿using HseBank.src.Domain.Interfaces.Commands;
+﻿using HseBank.src.Domain.Entities;
+using HseBank.src.Domain.Enums;
+using HseBank.src.Domain.Interfaces.Commands;
 using HseBank.src.Domain.Interfaces.Factories;
 using HseBank.src.Domain.Interfaces.Repositories;
 using HseBank.src.Domain.Models.DTOs;
@@ -14,6 +16,16 @@ namespace HseBank.src.Infrastructure.Factories
         public CommandFactory(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+        }
+
+        public ICommand ApplyOperationCommand(OperationApplyRequest request)
+        {
+            return new ApplyOperationCommand(
+                request,
+                _serviceProvider.GetRequiredService<IOperationFactory>(),
+                _serviceProvider.GetRequiredService<IOperationRepository>(),
+                _serviceProvider.GetRequiredService<IBankAccountRepository>()
+                );
         }
 
         public ICommand CreateBankAccountCommand(BankAccountCreateRequest request)
@@ -34,13 +46,25 @@ namespace HseBank.src.Infrastructure.Factories
                 );
         }
 
-        public ICommand ApplyOperationCommand(OperationApplyRequest request)
+        public IQueryCommand<IEnumerable<BankAccount>> GetAllBankAccountsCommand()
         {
-            return new ApplyOperationCommand(
-                request,
-                _serviceProvider.GetRequiredService<IOperationFactory>(),
-                _serviceProvider.GetRequiredService<IOperationRepository>(),
+            return new GetAllBankAccountsCommand(
                 _serviceProvider.GetRequiredService<IBankAccountRepository>()
+                );
+        }
+
+        public IQueryCommand<IEnumerable<Category>> GetAllCategoriesCommand()
+        {
+            return new GetAllCategoriesCommand(
+                _serviceProvider.GetRequiredService<ICategoryRepository>()
+                );
+        }
+
+        public IQueryCommand<IEnumerable<Category>> GetCategoriesByTypeCommand(TransactionType type)
+        {
+            return new GetCategoriesByTypeCommand(
+                type,
+                _serviceProvider.GetRequiredService<ICategoryRepository>()
                 );
         }
 
@@ -62,19 +86,19 @@ namespace HseBank.src.Infrastructure.Factories
                 );
         }
 
-        public ICommand DeleteBankAccountCommand(string name)
+        public ICommand DeleteBankAccountCommand(Guid id)
         {
             return new DeleteBankAccountCommand(
-                name,
+                id,
                 _serviceProvider.GetRequiredService<IBankAccountFactory>(),
                 _serviceProvider.GetRequiredService<IBankAccountRepository>()
                 );
         }
 
-        public ICommand DeleteCategoryCommand(string name)
+        public ICommand DeleteCategoryCommand(Guid id)
         {
             return new DeleteCategoryCommand(
-                name,
+                id,
                 _serviceProvider.GetRequiredService<ICategoryFactory>(),
                 _serviceProvider.GetRequiredService<ICategoryRepository>()
                 );

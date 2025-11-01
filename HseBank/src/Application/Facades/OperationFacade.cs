@@ -32,12 +32,17 @@ namespace HseBank.src.Application.Facades
             catch (ValidationException ex)
             {
                 _logger.LogWarning(ex, $"Ошибка валидации при выполнении операции: {ex.Message}");
-                return OperationResult.Failure($"Ошибка валидации: {ex.Message}.");
+                return OperationResult.Failure($"Ошибка валидации: {ex.Message}");
             }
             catch (EntityNotFoundException ex)
             {
                 _logger.LogWarning(ex, ex.Message);
                 return OperationResult.Failure(ex.Message);
+            }
+            catch (BusinessRuleException ex)
+            {
+                _logger.LogWarning(ex, $"Логическая ошибка при выполнении операции: {ex.Message}");
+                return OperationResult.Failure($"Логическая ошибка: {ex.Message}");
             }
             catch (Exception ex)
             {

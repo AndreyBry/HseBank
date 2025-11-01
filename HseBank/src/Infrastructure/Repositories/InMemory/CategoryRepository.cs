@@ -1,4 +1,5 @@
 ﻿using HseBank.src.Domain.Entities;
+using HseBank.src.Domain.Enums;
 using HseBank.src.Domain.Interfaces.Repositories;
 
 namespace HseBank.src.Infrastructure.Repositories.InMemory
@@ -6,12 +7,10 @@ namespace HseBank.src.Infrastructure.Repositories.InMemory
     public class CategoryRepository : ICategoryRepository
     {
         private readonly Dictionary<Guid, Category> _categories = new();
-        private readonly Dictionary<string, Category> _categoriesByName = new();
 
         public void Add(Category category)
         {
             _categories[category.Id] = category;
-            _categoriesByName[category.Name] = category;
         }
 
         public Category? GetById(Guid categoryId)
@@ -21,7 +20,18 @@ namespace HseBank.src.Infrastructure.Repositories.InMemory
 
         public Category? GetByName(string name)
         {
-            return _categoriesByName.ContainsKey(name) ? _categoriesByName[name] : null;
+            List<Category> suitableCategories = _categories.Values.Where(c => c.Name == name).ToList();
+            return suitableCategories.Count > 0 ? suitableCategories[0] : null;
+        }
+
+        public IEnumerable<Category> GetByType(TransactionType type)
+        {
+            return _categories.Values.Where(c => c.Type == type);
+        }
+
+        public IEnumerable<Category> GetAll()
+        {
+            return _categories.Values;
         }
 
         public void Update(Category category)
@@ -29,14 +39,12 @@ namespace HseBank.src.Infrastructure.Repositories.InMemory
             if (_categories.ContainsKey(category.Id))
             {
                 _categories[category.Id] = category;
-                _categoriesByName[category.Name] = category;
             }
         }
 
         public void Delete(Category category)
         {
             _categories.Remove(category.Id);
-            _categoriesByName.Remove(category.Name);
         }
     }
 }

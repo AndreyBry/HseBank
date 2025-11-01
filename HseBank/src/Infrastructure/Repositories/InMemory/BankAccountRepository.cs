@@ -6,12 +6,10 @@ namespace HseBank.src.Infrastructure.Repositories.InMemory
     public class BankAccountRepository : IBankAccountRepository
     {
         private readonly Dictionary<Guid, BankAccount> _accounts = new();
-        private readonly Dictionary<string, BankAccount> _accountsByName = new();
 
         public void Add(BankAccount bankAccount)
         {
             _accounts[bankAccount.Id] = bankAccount;
-            _accountsByName[bankAccount.Name] = bankAccount;
         }
 
         public BankAccount? GetById(Guid bankId)
@@ -21,7 +19,13 @@ namespace HseBank.src.Infrastructure.Repositories.InMemory
 
         public BankAccount? GetByName(string name)
         {
-            return _accountsByName.ContainsKey(name) ? _accountsByName[name] : null;
+            List<BankAccount> suitableAccounts = _accounts.Values.Where(a => a.Name == name).ToList();
+            return suitableAccounts.Count > 0 ? suitableAccounts[0] : null;
+        }
+
+        public IEnumerable<BankAccount> GetAll()
+        {
+            return _accounts.Values;
         }
 
         public void Update(BankAccount bankAccount)
@@ -29,14 +33,12 @@ namespace HseBank.src.Infrastructure.Repositories.InMemory
             if (_accounts.ContainsKey(bankAccount.Id))
             {
                 _accounts[bankAccount.Id] = bankAccount;
-                _accountsByName[bankAccount.Name] = bankAccount;
             }
         }
 
         public void Delete(BankAccount bankAccount)
         {
             _accounts.Remove(bankAccount.Id);
-            _accountsByName.Remove(bankAccount.Name);
         }
     }
 }

@@ -4,9 +4,9 @@ namespace HseBank.src.Domain.Interfaces.Repositories
 {
     public interface IRepository<TEntity> where TEntity : EntityBase
     {
-        void Add(TEntity entity);
-        TEntity? GetById(Guid entityId);
-        void Update(TEntity entity);
-        void Delete(TEntity entity);
+        public  void Add(TEntity entity);
+        public TEntity? GetById(Guid entityId);
+        public void Update(TEntity entity);
+        public void Delete(TEntity entity);
     }
 }

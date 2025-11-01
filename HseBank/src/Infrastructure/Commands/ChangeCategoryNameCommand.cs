@@ -1,6 +1,5 @@
 ﻿using HseBank.src.Domain.Interfaces.Commands;
 using HseBank.src.Domain.Interfaces.Repositories;
-using System.Security.Principal;
 
 namespace HseBank.src.Infrastructure.Commands
 {

@@ -7,31 +7,33 @@ namespace HseBank.src.Infrastructure.Commands
 {
     public class DeleteBankAccountCommand : ICommand
     {
-        private string _name;
+        private Guid _id;
+        private string _name = string.Empty;
         private IBankAccountFactory _bankAccountFactory;
         private IBankAccountRepository _bankAccountRepository;
 
-        public DeleteBankAccountCommand(string name, IBankAccountFactory bankAccountFactory, IBankAccountRepository bankAccountRepository)
+        public DeleteBankAccountCommand(Guid id, IBankAccountFactory bankAccountFactory, IBankAccountRepository bankAccountRepository)
         {
-            _name = name;
+            _id = id;
             _bankAccountFactory = bankAccountFactory;
             _bankAccountRepository = bankAccountRepository;
         }
 
         public void Execute()
         {
-            var account = _bankAccountRepository.GetByName(_name);
+            var account = _bankAccountRepository.GetById(_id);
             if (account is null)
             {
-                throw new EntityNotFoundException("счет", _name);
+                throw new EntityNotFoundException("счет", _id);
             }
+            _name = account.Name;
             _bankAccountRepository.Delete(account);
         }
 
         public void Undo()
         {
-            var account = _bankAccountRepository.GetByName(_name);
-            if (account is null)
+            var account = _bankAccountRepository.GetById(_id);
+            if (account is null && _name != string.Empty)
             {
                 var request = new BankAccountCreateRequest(_name);
                 account = _bankAccountFactory.Create(request);

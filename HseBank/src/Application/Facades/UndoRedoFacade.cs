@@ -5,12 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace HseBank.src.Application.Facades
 {
-    public class UndoFacade : IUndoFacade
+    public class UndoRedoFacade : IUndoRedoFacade
     {
-        private ILogger<UndoFacade> _logger;
+        private ILogger<UndoRedoFacade> _logger;
         private ICommandManager _commandManager;
 
-        public UndoFacade(ILogger<UndoFacade> logger, ICommandManager commandManager)
+        public UndoRedoFacade(ILogger<UndoRedoFacade> logger, ICommandManager commandManager)
         {
             _logger = logger;
             _commandManager = commandManager;
@@ -30,6 +30,24 @@ namespace HseBank.src.Application.Facades
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Критическая ошибка при отмене действия: {ex.Message}");
+                return OperationResult.Failure($"Системная ошибка: {ex.Message}");
+            }
+        }
+
+        public OperationResult Redo()
+        {
+            if(!_commandManager.CanRedo)
+            {
+                return OperationResult.Failure("Нет действий для повторного выполнения.");
+            }
+            try
+            {
+                _commandManager.Redo();
+                return OperationResult.Success("Действие выполнено повторно успешно.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Критическая ошибка при повторном выполнении действия: {ex.Message}");
                 return OperationResult.Failure($"Системная ошибка: {ex.Message}");
             }
         }
