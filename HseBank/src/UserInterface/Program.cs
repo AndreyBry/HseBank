@@ -24,5 +24,5 @@ public class Program
         services.AddUserInterfaceServices();
         var provider = services.BuildServiceProvider();
         return provider;
-    }
+    } 
 }
