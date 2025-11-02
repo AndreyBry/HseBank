@@ -11,9 +11,7 @@ public class Program
     {
         Console.OutputEncoding = Encoding.UTF8;
         Console.InputEncoding = Encoding.UTF8;
-
         var serviceProvider = SetupDependencyInjection();
-
         var mainMenu = serviceProvider.GetRequiredService<IMenu>();
         mainMenu.Show();
     }

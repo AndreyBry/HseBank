@@ -3,6 +3,7 @@ using HseBank.src.Domain.Enums;
 using HseBank.src.Domain.Interfaces.Commands;
 using HseBank.src.Domain.Interfaces.Factories;
 using HseBank.src.Domain.Interfaces.Repositories;
+using HseBank.src.Domain.Interfaces.Services;
 using HseBank.src.Domain.Models.DTOs;
 using HseBank.src.Infrastructure.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -101,6 +102,14 @@ namespace HseBank.src.Infrastructure.Factories
                 id,
                 _serviceProvider.GetRequiredService<ICategoryFactory>(),
                 _serviceProvider.GetRequiredService<ICategoryRepository>()
+                );
+        }
+
+        public ICommand TimedCommandDecorator(ICommand decoratedCommand)
+        {
+            return new TimedCommandDecorator(
+                decoratedCommand,
+                _serviceProvider.GetRequiredService<IMetricsService>()
                 );
         }
     }

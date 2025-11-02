@@ -26,9 +26,10 @@ namespace HseBank.src.Application.Facades
         public OperationResult Create(BankAccountCreateRequest request)
         {
             ICommand command = _commandFactory.CreateBankAccountCommand(request);
+            ICommand timedCommand = _commandFactory.TimedCommandDecorator(command);
             try
             {
-                _commandManager.Execute(command);
+                _commandManager.Execute(timedCommand);
                 return OperationResult.Success("Счет создан успешно.");
             }
             catch (ValidationException ex)
@@ -61,9 +62,10 @@ namespace HseBank.src.Application.Facades
         public OperationResult ChangeName(string oldName, string newName)
         {
             ICommand command = _commandFactory.ChangeBankAccountNameCommand(oldName, newName);
+            ICommand timedCommand = _commandFactory.TimedCommandDecorator(command);
             try
             {
-                _commandManager.Execute(command);
+                _commandManager.Execute(timedCommand);
                 return OperationResult.Success("Название счета изменено успешно.");
             }
             catch (EntityNotFoundException ex)
@@ -81,9 +83,10 @@ namespace HseBank.src.Application.Facades
         public OperationResult Delete(Guid id)
         {
             ICommand command = _commandFactory.DeleteBankAccountCommand(id);
+            ICommand timedCommand = _commandFactory.TimedCommandDecorator(command);
             try
             {
-                _commandManager.Execute(command);
+                _commandManager.Execute(timedCommand);
                 return OperationResult.Success("Счет удален успешно.");
             }
             catch (EntityNotFoundException ex)

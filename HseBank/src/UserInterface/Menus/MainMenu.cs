@@ -8,13 +8,15 @@ namespace HseBank.src.UserInterface.Menus
         private IBankAccountMenu _bankAccountMenu;
         private ICategoryMenu _categoryMenu;
         private IOperationMenu _operationMenu;
+        private IMetricsMenu _metricsMenu;
         private IUndoRedoMenu _undoRedoMenu;
 
-        public MainMenu(IBankAccountMenu bankAccountMenu, ICategoryMenu categoryMenu, IOperationMenu operationMenu, IUndoRedoMenu undoRedoMenu)
+        public MainMenu(IBankAccountMenu bankAccountMenu, ICategoryMenu categoryMenu, IOperationMenu operationMenu, IMetricsMenu metricsMenu, IUndoRedoMenu undoRedoMenu)
         {
             _bankAccountMenu = bankAccountMenu;
             _categoryMenu = categoryMenu;
             _operationMenu = operationMenu;
+            _metricsMenu = metricsMenu;
             _undoRedoMenu = undoRedoMenu;
         }
 
@@ -39,6 +41,7 @@ namespace HseBank.src.UserInterface.Menus
                             "💰 Управление счетами",
                             "📂 Управление категориями",
                             "💳 Операции (доход/расход)",
+                            "📊 Метрики производительности",
                             "↩️ Отменить последнее действие",
                             "🔁 Повторить отмененное действие",
                             "❌ Выход"
@@ -54,6 +57,9 @@ namespace HseBank.src.UserInterface.Menus
                         break;
                     case "💳 Операции (доход/расход)":
                         _operationMenu.Show();
+                        break;
+                    case "📊 Метрики производительности":
+                        _metricsMenu.Show();
                         break;
                     case "↩️ Отменить последнее действие":
                         _undoRedoMenu.UndoLastAction();

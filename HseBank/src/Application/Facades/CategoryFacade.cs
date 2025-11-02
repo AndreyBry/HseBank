@@ -27,9 +27,10 @@ namespace HseBank.src.Application.Facades
         public OperationResult Create(CategoryCreateRequest request)
         {
             ICommand command = _commandFactory.CreateCategoryCommand(request);
+            ICommand timedCommand = _commandFactory.TimedCommandDecorator(command);
             try
             {
-                _commandManager.Execute(command);
+                _commandManager.Execute(timedCommand);
                 return OperationResult.Success("Категория создана успешно.");
             }
             catch (ValidationException ex)
@@ -77,9 +78,10 @@ namespace HseBank.src.Application.Facades
         public OperationResult ChangeName(string oldName, string newName)
         {
             ICommand command = _commandFactory.ChangeCategoryNameCommand(oldName, newName);
+            ICommand timedCommand = _commandFactory.TimedCommandDecorator(command);
             try
             {
-                _commandManager.Execute(command);
+                _commandManager.Execute(timedCommand);
                 return OperationResult.Success("Название категории изменено успешно.");
             }
             catch (EntityNotFoundException ex)
@@ -97,9 +99,10 @@ namespace HseBank.src.Application.Facades
         public OperationResult Delete(Guid id)
         {
             ICommand command = _commandFactory.DeleteCategoryCommand(id);
+            ICommand timedCommand = _commandFactory.TimedCommandDecorator(command);
             try
             {
-                _commandManager.Execute(command);
+                _commandManager.Execute(timedCommand);
                 return OperationResult.Success("Категория удалена успешно.");
             }
             catch (EntityNotFoundException ex)

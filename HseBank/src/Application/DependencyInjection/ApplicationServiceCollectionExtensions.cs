@@ -18,6 +18,7 @@ namespace HseBank.src.Application.DependencyInjection
 
             // Менеджер команд
             services.AddSingleton<ICommandManager, CommandManager>();
+            services.AddSingleton<IMetricsService, MetricsService>();
 
             return services;
         }

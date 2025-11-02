@@ -21,6 +21,7 @@ namespace HseBank.src.UserInterface.DependencyInjection
             services.AddScoped<IBankAccountMenu, BankAccountMenu>();
             services.AddScoped<ICategoryMenu, CategoryMenu>();
             services.AddScoped<IOperationMenu, OperationMenu>();
+            services.AddScoped<IMetricsMenu, MetricsMenu>();
             services.AddScoped<IUndoRedoMenu, UndoRedoMenu>();
 
             return services;

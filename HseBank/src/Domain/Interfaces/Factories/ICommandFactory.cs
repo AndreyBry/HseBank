@@ -20,5 +20,7 @@ namespace HseBank.src.Domain.Interfaces.Factories
 
         public ICommand DeleteBankAccountCommand(Guid id);
         public ICommand DeleteCategoryCommand(Guid id);
+
+        public ICommand TimedCommandDecorator(ICommand decoratedCommand);
     }
 }

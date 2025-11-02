@@ -1,4 +1,5 @@
 ﻿using HseBank.src.Domain.Exceptions;
+using HseBank.src.Domain.Interfaces.Commands;
 using HseBank.src.Domain.Interfaces.Facades;
 using HseBank.src.Domain.Interfaces.Factories;
 using HseBank.src.Domain.Interfaces.Services;
@@ -23,10 +24,11 @@ namespace HseBank.src.Application.Facades
 
         public OperationResult Apply(OperationApplyRequest request)
         {
-            var command = _commandFactory.ApplyOperationCommand(request);
+            ICommand command = _commandFactory.ApplyOperationCommand(request);
+            ICommand timedCommand = _commandFactory.TimedCommandDecorator(command);
             try
             {
-                _commandManager.Execute(command);
+                _commandManager.Execute(timedCommand);
                 return OperationResult.Success("Операция выполнена успешно.");
             }
             catch (ValidationException ex)
