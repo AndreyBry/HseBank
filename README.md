@@ -138,3 +138,12 @@ public class BankAccountFacade : IBankAccountFacade
 - Плагинная архитектура через интерфейсы
 - Легкость добавления новых хранилищ данных
 - Простота интеграции дополнительной функциональности
+
+---
+
+## Инструкция по запуску
+
+- Клонировать репозиторий
+- Открыть проект в среде разработки
+- Установить используемые пакеты NuGet: Spectre.Console, Microsoft.Extensions.DependencyInjection, Microsoft.Extensions.Logging, Microsoft.Extensions.Logging.Console
+- Запустить проект
