@@ -1,0 +1,133 @@
+﻿using HseBank.src.Domain.Entities;
+using HseBank.src.Domain.Exceptions;
+using HseBank.src.Domain.Interfaces.Commands;
+using HseBank.src.Domain.Interfaces.Facades;
+using HseBank.src.Domain.Interfaces.Factories;
+using HseBank.src.Domain.Interfaces.Services;
+using HseBank.src.Domain.Models.DTOs;
+using HseBank.src.Domain.Models.Results;
+using Microsoft.Extensions.Logging;
+
+namespace HseBank.src.Application.Facades
+{
+    /// <summary>
+    /// Фасад для работы с банковскими счетами.
+    /// </summary>
+    public class BankAccountFacade : IBankAccountFacade
+    {
+        private ILogger<BankAccountFacade> _logger;
+        private ICommandFactory _commandFactory;
+        private ICommandManager _commandManager;
+
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="logger">Логгер.</param>
+        /// <param name="commandFactory">Фабрика команд.</param>
+        /// <param name="commandManager">Менеджер команд.</param>
+        public BankAccountFacade(ILogger<BankAccountFacade> logger, ICommandFactory commandFactory, ICommandManager commandManager)
+        {
+            _logger = logger;
+            _commandFactory = commandFactory;
+            _commandManager = commandManager;
+        }
+        
+        /// <summary>
+        /// Метод для создания счета.
+        /// </summary>
+        /// <param name="request">ДТО с данными для создания.</param>
+        /// <returns>Результат, содержащий статус выполнения и сообщение.</returns>
+        public OperationResult Create(BankAccountCreateRequest request)
+        {
+            ICommand command = _commandFactory.CreateBankAccountCommand(request);
+            ICommand timedCommand = _commandFactory.TimedCommandDecorator(command);
+            try
+            {
+                _commandManager.Execute(timedCommand);
+                return OperationResult.Success("Счет создан успешно.");
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, $"Ошибка валидации при создании счета: {ex.Message}");
+                return OperationResult.Failure($"Ошибка валидации: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Критическая ошибка при создании счета: {ex.Message}");
+                return OperationResult.Failure($"Системная ошибка: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Метод для получения всех счетов.
+        /// </summary>
+        /// <returns>Результат, содержащий статус выполнения, все счета и сообщение.</returns>
+        public OperationResult<IEnumerable<BankAccount>> GetAll()
+        {
+            var command = _commandFactory.GetAllBankAccountsCommand();
+            try
+            {
+                IEnumerable<BankAccount> accounts = _commandManager.Execute(command);
+                return OperationResult<IEnumerable<BankAccount>>.Success(accounts, "Информация о счетах получена успешно.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Критическая ошибка при получении информации о счетах: {ex.Message}");
+                return OperationResult<IEnumerable<BankAccount>>.Failure(new List<BankAccount>(), $"Системная ошибка: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Метод для изменения названия счета.
+        /// </summary>
+        /// <param name="oldName">Название счета, которое нужно изменить.</param>
+        /// <param name="newName">Новое название.</param>
+        /// <returns>Результат, статус выполнения и сообщение.</returns>
+        public OperationResult ChangeName(string oldName, string newName)
+        {
+            ICommand command = _commandFactory.ChangeBankAccountNameCommand(oldName, newName);
+            ICommand timedCommand = _commandFactory.TimedCommandDecorator(command);
+            try
+            {
+                _commandManager.Execute(timedCommand);
+                return OperationResult.Success("Название счета изменено успешно.");
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogWarning(ex, ex.Message);
+                return OperationResult.Failure(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Критическая ошибка при изменении названия счета: {ex.Message}");
+                return OperationResult.Failure($"Системная ошибка: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Метод для удаления счета.
+        /// </summary>
+        /// <param name="id">Айди счета.</param>
+        /// <returns>Результат, содержащий статус выполнения и сообщение.</returns>
+        public OperationResult Delete(Guid id)
+        {
+            ICommand command = _commandFactory.DeleteBankAccountCommand(id);
+            ICommand timedCommand = _commandFactory.TimedCommandDecorator(command);
+            try
+            {
+                _commandManager.Execute(timedCommand);
+                return OperationResult.Success("Счет удален успешно.");
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogWarning(ex, ex.Message);
+                return OperationResult.Failure(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Критическая ошибка при удалении счета: {ex.Message}");
+                return OperationResult.Failure($"Системная ошибка: {ex.Message}");
+            }
+        }
+    }
+}

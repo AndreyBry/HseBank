@@ -1,15 +1,47 @@
 ﻿using HseBank.src.Domain.Enums;
+using HseBank.src.Domain.Interfaces.Export;
 
 namespace HseBank.src.Domain.Entities
 {
-    public class Category
+    /// <summary>
+    /// Доменный класс, описывающий категорию доходов/расходов.
+    /// </summary>
+    public class Category : EntityBase
     {
-        private Guid _id;
         private TransactionType _type;
         private string _name;
 
-        public Guid Id => _id;
-        public TransactionType Type { get => _type; set => _type = value; }
-        public string Name { get => _name; set => _name = value; }
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="id">Айди.</param>
+        /// <param name="type">Тип (доход/расход).</param>
+        /// <param name="name">Название.</param>
+        public Category(Guid id, TransactionType type, string name)
+        {
+            _id = id;
+            _type = type;
+            _name = name;
+        }
+
+        public TransactionType Type => _type;
+        public string Name => _name;
+
+        /// <summary>
+        /// Метод для изменения названия.
+        /// </summary>
+        /// <param name="name">Новое название.</param>
+        public void UpdateName(string name){
+            _name = name;
+        }
+
+        /// <summary>
+        /// Метод для экспорта данных.
+        /// </summary>
+        /// <param name="visitor">Объект, который производит экспорт.</param>
+        public void Accept(IDataVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

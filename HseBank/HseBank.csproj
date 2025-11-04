@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="src\Infrastructure\Factories\" />
-    <Folder Include="src\Infrastructure\Export\" />
-    <Folder Include="src\Infrastructure\Import\" />
-    <Folder Include="src\Infrastructure\Commands\" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.10" />
+    <PackageReference Include="Spectre.Console" Version="0.53.0" />
   </ItemGroup>
 
 </Project>

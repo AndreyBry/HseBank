@@ -1,20 +1,20 @@
-﻿using HseBank.src.Domain.Exceptions;
+﻿using HseBank.src.Domain.Enums;
+using HseBank.src.Domain.Exceptions;
 using HseBank.src.Domain.Interfaces.Commands;
 using HseBank.src.Domain.Interfaces.Facades;
 using HseBank.src.Domain.Interfaces.Factories;
 using HseBank.src.Domain.Interfaces.Services;
-using HseBank.src.Domain.Models.DTOs;
 using HseBank.src.Domain.Models.Results;
 using Microsoft.Extensions.Logging;
 
 namespace HseBank.src.Application.Facades
 {
     /// <summary>
-    /// Фасад для работы с операциями.
+    /// Фасад для экспорта данных в файл.
     /// </summary>
-    public class OperationFacade : IOperationFacade
+    public class ExportFacade : IExportFacade
     {
-        private ILogger<OperationFacade> _logger;
+        private ILogger<ExportFacade> _logger;
         private ICommandFactory _commandFactory;
         private ICommandManager _commandManager;
 
@@ -24,7 +24,7 @@ namespace HseBank.src.Application.Facades
         /// <param name="logger">Логгер.</param>
         /// <param name="commandFactory">Фабрика команд.</param>
         /// <param name="commandManager">Менеджер команд.</param>
-        public OperationFacade(ILogger<OperationFacade> logger, ICommandFactory commandFactory, ICommandManager commandManager)
+        public ExportFacade(ILogger<ExportFacade> logger, ICommandFactory commandFactory, ICommandManager commandManager)
         {
             _logger = logger;
             _commandFactory = commandFactory;
@@ -32,37 +32,28 @@ namespace HseBank.src.Application.Facades
         }
 
         /// <summary>
-        /// Метод для создания и выполения операции.
+        /// Метод для экспорта данных в файл.
         /// </summary>
-        /// <param name="request">ДТО с данными для создания и выполнения.</param>
+        /// <param name="filePath">Путь до файла.</param>
+        /// <param name="fileFormat">Тип файла.</param>
         /// <returns>Результат, содержащий статус выполнения и сообщение.</returns>
-        public OperationResult Apply(OperationApplyRequest request)
+        public OperationResult Export(string filePath, FileFormat fileFormat)
         {
-            ICommand command = _commandFactory.ApplyOperationCommand(request);
+            ICommand command = _commandFactory.ExportDataCommand(filePath, fileFormat);
             ICommand timedCommand = _commandFactory.TimedCommandDecorator(command);
             try
             {
                 _commandManager.Execute(timedCommand);
-                return OperationResult.Success("Операция выполнена успешно.");
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, $"Ошибка валидации при выполнении операции: {ex.Message}");
-                return OperationResult.Failure($"Ошибка валидации: {ex.Message}");
+                return OperationResult.Success("Данные экспортированы успешно.");
             }
             catch (EntityNotFoundException ex)
             {
                 _logger.LogWarning(ex, ex.Message);
                 return OperationResult.Failure(ex.Message);
             }
-            catch (BusinessRuleException ex)
-            {
-                _logger.LogWarning(ex, $"Логическая ошибка при выполнении операции: {ex.Message}");
-                return OperationResult.Failure($"Логическая ошибка: {ex.Message}");
-            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Критическая ошибка при выполнении операции: {ex.Message}");
+                _logger.LogError(ex, $"Критическая ошибка при эскпорте данных: {ex.Message}");
                 return OperationResult.Failure($"Системная ошибка: {ex.Message}");
             }
         }

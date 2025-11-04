@@ -1,0 +1,68 @@
+[
+  {
+    "type": "BankAccount",
+    "id": "7b0548f1-0b74-48e5-9bf5-46fb42d1938d",
+    "name": "Main",
+    "balance": 800
+  },
+  {
+    "type": "BankAccount",
+    "id": "798ad704-765f-46ed-8529-e4e03f493596",
+    "name": "Additional",
+    "balance": 80000
+  },
+  {
+    "type": "Category",
+    "id": "ddd08bc1-a56c-4dd3-827c-370e78d2a67e",
+    "name": "\u0417\u0430\u0440\u043F\u043B\u0430\u0442\u0430",
+    "categoryType": "Income"
+  },
+  {
+    "type": "Category",
+    "id": "39e225e0-fd1c-4c9d-b92d-1a3e4c980ee7",
+    "name": "\u0421\u0442\u0438\u043F\u0435\u043D\u0434\u0438\u044F",
+    "categoryType": "Income"
+  },
+  {
+    "type": "Category",
+    "id": "32e44e2b-f4f6-4929-98be-8a3dbe6d4368",
+    "name": "\u041F\u0440\u043E\u0434\u0443\u043A\u0442\u044B",
+    "categoryType": "Expense"
+  },
+  {
+    "type": "Category",
+    "id": "0b1f382b-c67f-4b79-8630-35f3b382a1ac",
+    "name": "\u0422\u0440\u0430\u043D\u0441\u043F\u043E\u0440\u0442",
+    "categoryType": "Expense"
+  },
+  {
+    "type": "Operation",
+    "id": "232e9920-52aa-4100-8dfb-22f9f8c6395e",
+    "categoryType": "Income",
+    "amount": 2100,
+    "bankAccountId": "7b0548f1-0b74-48e5-9bf5-46fb42d1938d",
+    "categoryId": "39e225e0-fd1c-4c9d-b92d-1a3e4c980ee7",
+    "date": "2025-11-04T15:01:15.2686544Z",
+    "description": ""
+  },
+  {
+    "type": "Operation",
+    "id": "7bb198f8-f6ce-439e-9a4a-a5903990ef5b",
+    "categoryType": "Expense",
+    "amount": 1300,
+    "bankAccountId": "7b0548f1-0b74-48e5-9bf5-46fb42d1938d",
+    "categoryId": "0b1f382b-c67f-4b79-8630-35f3b382a1ac",
+    "date": "2025-11-04T15:01:29.4553356Z",
+    "description": ""
+  },
+  {
+    "type": "Operation",
+    "id": "2ccf4532-8323-479a-be00-564c5b4459f5",
+    "categoryType": "Income",
+    "amount": 80000,
+    "bankAccountId": "798ad704-765f-46ed-8529-e4e03f493596",
+    "categoryId": "ddd08bc1-a56c-4dd3-827c-370e78d2a67e",
+    "date": "2025-11-04T15:02:05.4512309Z",
+    "description": ""
+  }
+]
