@@ -11,12 +11,21 @@ using Microsoft.Extensions.Logging;
 
 namespace HseBank.src.Application.Facades
 {
+    /// <summary>
+    /// Фасад для работы с категориями.
+    /// </summary>
     public class CategoryFacade : ICategoryFacade
     {
         private ILogger<BankAccountFacade> _logger;
         private ICommandFactory _commandFactory;
         private ICommandManager _commandManager;
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="logger">Логгер.</param>
+        /// <param name="commandFactory">Фабрика команд.</param>
+        /// <param name="commandManager">Менеджер команд.</param>
         public CategoryFacade(ILogger<BankAccountFacade> logger, ICommandFactory commandFactory, ICommandManager commandManager)
         {
             _logger = logger;
@@ -24,6 +33,11 @@ namespace HseBank.src.Application.Facades
             _commandManager = commandManager;
         }
 
+        /// <summary>
+        /// Метод для создания категории.
+        /// </summary>
+        /// <param name="request">ДТО с данными для создания.</param>
+        /// <returns>Результат, содержащий статус выполнения и сообщение.</returns>
         public OperationResult Create(CategoryCreateRequest request)
         {
             ICommand command = _commandFactory.CreateCategoryCommand(request);
@@ -45,6 +59,10 @@ namespace HseBank.src.Application.Facades
             }
         }
 
+        /// <summary>
+        /// Метод для получения всех категорий.
+        /// </summary>
+        /// <returns>Результат, содержащий статус выполнения, все категории и сообщение.</returns>
         public OperationResult<IEnumerable<Category>> GetAll()
         {
             var command = _commandFactory.GetAllCategoriesCommand();
@@ -60,6 +78,11 @@ namespace HseBank.src.Application.Facades
             }
         }
 
+        /// <summary>
+        /// Метод для получения категорий определенного типа.
+        /// </summary>
+        /// <param name="type">Тип категории.</param>
+        /// <returns>Результат, содержащий статус выполнения, категории определенного типа и сообщение.</returns>
         public OperationResult<IEnumerable<Category>> GetByType(TransactionType type)
         {
             var command = _commandFactory.GetCategoriesByTypeCommand(type);
@@ -75,6 +98,12 @@ namespace HseBank.src.Application.Facades
             }
         }
 
+        /// <summary>
+        /// Метод для изменения названия категории.
+        /// </summary>
+        /// <param name="oldName">Название категории, которое необходимо изменить.</param>
+        /// <param name="newName">Новое название.</param>
+        /// <returns>Результат, содержащий статус выполнения и сообщение.</returns>
         public OperationResult ChangeName(string oldName, string newName)
         {
             ICommand command = _commandFactory.ChangeCategoryNameCommand(oldName, newName);
@@ -96,6 +125,11 @@ namespace HseBank.src.Application.Facades
             }
         }
 
+        /// <summary>
+        /// Метод для удаления категории.
+        /// </summary>
+        /// <param name="id">Айди категории.</param>
+        /// <returns>Результат, содержащий статус выполнения и сообщение.</returns>
         public OperationResult Delete(Guid id)
         {
             ICommand command = _commandFactory.DeleteCategoryCommand(id);

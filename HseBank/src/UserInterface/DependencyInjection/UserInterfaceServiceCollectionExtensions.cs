@@ -5,8 +5,16 @@ using Microsoft.Extensions.Logging;
 
 namespace HseBank.src.UserInterface.DependencyInjection
 {
+    /// <summary>
+    /// Класс, содержащий расширения для IServiceCollection.
+    /// </summary>
     public static class UserInterfaceServiceCollectionExtensions
     {
+        /// <summary>
+        /// Метод-расширение для регистрации в DI логгера и меню.
+        /// </summary>
+        /// <param name="services">Service Collection.</param>
+        /// <returns>Service Collection.</returns>
         public static IServiceCollection AddUserInterfaceServices(this IServiceCollection services)
         {
             // Настройка логирования
@@ -17,12 +25,14 @@ namespace HseBank.src.UserInterface.DependencyInjection
             });
 
             // Регистрация меню
-            services.AddScoped<IMenu, MainMenu>();
-            services.AddScoped<IBankAccountMenu, BankAccountMenu>();
-            services.AddScoped<ICategoryMenu, CategoryMenu>();
-            services.AddScoped<IOperationMenu, OperationMenu>();
-            services.AddScoped<IMetricsMenu, MetricsMenu>();
-            services.AddScoped<IUndoRedoMenu, UndoRedoMenu>();
+            services.AddTransient<IMenu, MainMenu>();
+            services.AddTransient<IBankAccountMenu, BankAccountMenu>();
+            services.AddTransient<ICategoryMenu, CategoryMenu>();
+            services.AddTransient<IOperationMenu, OperationMenu>();
+            services.AddTransient<IMetricsMenu, MetricsMenu>();
+            services.AddTransient<IImportMenu, ImportMenu>();
+            services.AddTransient<IExportMenu, ExportMenu>();
+            services.AddTransient<IUndoRedoMenu, UndoRedoMenu>();
 
             return services;
         }

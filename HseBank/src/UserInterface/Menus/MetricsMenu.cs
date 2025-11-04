@@ -6,15 +6,25 @@ using System.Text;
 
 namespace HseBank.src.UserInterface.Menus
 {
+    /// <summary>
+    /// Меню для работы с метриками.
+    /// </summary>
     public class MetricsMenu : MenuExtensions, IMetricsMenu
     {
         private IMetricsService _metricsService;
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="metricsService">Сервис метрик.</param>
         public MetricsMenu(IMetricsService metricsService)
         {
             _metricsService = metricsService;
         }
 
+        /// <summary>
+        /// Вывод меню и выбор действия.
+        /// </summary>
         public void Show()
         {
             var choice = AnsiConsole.Prompt(
@@ -37,6 +47,9 @@ namespace HseBank.src.UserInterface.Menus
             }
         }
 
+        /// <summary>
+        /// Отображение метрик.
+        /// </summary>
         public void ShowCommandMetrics()
         {
             var allMetrics = _metricsService.GetAllMetrics().ToList();
@@ -70,8 +83,8 @@ namespace HseBank.src.UserInterface.Menus
                     $"[cyan]{metrics.TotalExecutions}[/]",
                     $"[{successColor}]{metrics.SuccessRate:0.0}%[/]",
                     $"[{speedColor}]{metrics.AverageDuration.TotalMilliseconds:0.000} мс[/]",
-                    $"[grey]{metrics.MinDuration.TotalMilliseconds:0} мс[/]",
-                    $"[grey]{metrics.MaxDuration.TotalMilliseconds:0} мс[/]"
+                    $"[grey]{metrics.MinDuration.TotalMilliseconds:0.00} мс[/]",
+                    $"[grey]{metrics.MaxDuration.TotalMilliseconds:0.00} мс[/]"
                 );
             }
 
@@ -82,6 +95,9 @@ namespace HseBank.src.UserInterface.Menus
             WaitForKey();
         }
 
+        /// <summary>
+        /// Запуск процесса очистки метрик.
+        /// </summary>
         public void ClearMetrics()
         {
             var allMetrics = _metricsService.GetAllMetrics().ToList();
@@ -110,6 +126,10 @@ namespace HseBank.src.UserInterface.Menus
             WaitForKey();
         }
 
+        /// <summary>
+        /// Вывод анализа метрик.
+        /// </summary>
+        /// <param name="metrics">Метрики.</param>
         private void ShowPerformanceAnalysis(List<CommandMetrics> metrics)
         {
             Console.WriteLine();
@@ -121,6 +141,11 @@ namespace HseBank.src.UserInterface.Menus
             AnsiConsole.Write(panel);
         }
 
+        /// <summary>
+        /// Анализ метрик.
+        /// </summary>
+        /// <param name="metrics">Метрики.</param>
+        /// <returns>Результат анализа метрик.</returns>
         private string GetAnalysisText(List<CommandMetrics> metrics)
         {
             var slowest = metrics.OrderByDescending(m => m.AverageDuration.TotalMilliseconds).First();
@@ -128,13 +153,14 @@ namespace HseBank.src.UserInterface.Menus
             var mostReliable = metrics.Where(m => m.TotalExecutions >= 3)
                                      .OrderByDescending(m => m.SuccessRate)
                                      .FirstOrDefault();
+            var maxReliablePercentage = metrics.Select(m => m.SuccessRate).Max();
 
             var analysis = new StringBuilder();
 
             analysis.AppendLine($"[red]🐌 Самая медленная:[/] {slowest.CommandType} ({slowest.AverageDuration.TotalMilliseconds:0} мс)");
             analysis.AppendLine($"[cyan]🔥 Самая популярная:[/] {mostUsed.CommandType} ({mostUsed.TotalExecutions} раз)");
 
-            if (mostReliable != null)
+            if (mostReliable != null && mostReliable.SuccessRate == maxReliablePercentage)
             {
                 analysis.AppendLine($"[green]✅ Самая надежная:[/] {mostReliable.CommandType} ({mostReliable.SuccessRate:0.0}% успеха)");
             }

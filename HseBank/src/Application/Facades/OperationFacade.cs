@@ -9,12 +9,21 @@ using Microsoft.Extensions.Logging;
 
 namespace HseBank.src.Application.Facades
 {
+    /// <summary>
+    /// Фасад для работы с операциями.
+    /// </summary>
     public class OperationFacade : IOperationFacade
     {
         private ILogger<OperationFacade> _logger;
         private ICommandFactory _commandFactory;
         private ICommandManager _commandManager;
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="logger">Логгер.</param>
+        /// <param name="commandFactory">Фабрика команд.</param>
+        /// <param name="commandManager">Менеджер команд.</param>
         public OperationFacade(ILogger<OperationFacade> logger, ICommandFactory commandFactory, ICommandManager commandManager)
         {
             _logger = logger;
@@ -22,6 +31,11 @@ namespace HseBank.src.Application.Facades
             _commandManager = commandManager;
         }
 
+        /// <summary>
+        /// Метод для создания и выполения операции.
+        /// </summary>
+        /// <param name="request">ДТО с данными для создания и выполнения.</param>
+        /// <returns>Результат, содержащий статус выполнения и сообщение.</returns>
         public OperationResult Apply(OperationApplyRequest request)
         {
             ICommand command = _commandFactory.ApplyOperationCommand(request);

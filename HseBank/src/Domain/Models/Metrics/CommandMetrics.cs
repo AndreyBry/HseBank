@@ -1,5 +1,8 @@
 ﻿namespace HseBank.src.Domain.Models.Metrics
 {
+    /// <summary>
+    /// Содержит метрики выполнения команды.
+    /// </summary>
     public class CommandMetrics
     {
         public string CommandType { get; set; }
@@ -18,6 +21,10 @@
             ? (SuccessfulExecutions * 100.0) / TotalExecutions
             : 0;
 
+        /// <summary>
+        /// Клонирование метрик.
+        /// </summary>
+        /// <returns>Метрики выполнения команды.</returns>
         public CommandMetrics Clone()
         {
             return new CommandMetrics

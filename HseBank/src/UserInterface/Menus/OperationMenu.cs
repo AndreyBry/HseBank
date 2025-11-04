@@ -6,12 +6,21 @@ using Spectre.Console;
 
 namespace HseBank.src.UserInterface.Menus
 {
+    /// <summary>
+    /// Меню для работы с операциями.
+    /// </summary>
     public class OperationMenu : MenuExtensions, IOperationMenu
     {
         private IBankAccountFacade _bankAccountFacade;
         private ICategoryFacade _categoryFacade;
         private IOperationFacade _operationFacade;
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="bankAccountFacade">Фасад банковских счетов.</param>
+        /// <param name="categoryFacade">Фасад категорий.</param>
+        /// <param name="operationFacade">Фасад операций.</param>
         public OperationMenu(IBankAccountFacade bankAccountFacade, ICategoryFacade categoryFacade, IOperationFacade operationFacade)
         {
             _bankAccountFacade = bankAccountFacade;
@@ -19,6 +28,9 @@ namespace HseBank.src.UserInterface.Menus
             _operationFacade = operationFacade;
         }
 
+        /// <summary>
+        /// Вывод меню и выбор действия.
+        /// </summary>
         public void Show()
         {
             var choice = AnsiConsole.Prompt(
@@ -41,6 +53,10 @@ namespace HseBank.src.UserInterface.Menus
             }
         }
 
+        /// <summary>
+        /// Запуск процесса создания и выполнения операции.
+        /// </summary>
+        /// <param name="type">Тип операции.</param>
         public void AddOperation(TransactionType type)
         {
             var operationType = type == TransactionType.Income ? "📈 ДОХОД" : "📉 РАСХОД";
@@ -87,7 +103,7 @@ namespace HseBank.src.UserInterface.Menus
             var amount = AnsiConsole.Ask("Сумма:", 100.00m);
             var description = AnsiConsole.Ask("Описание (необязательно):", "");
 
-            var request = new OperationApplyRequest(type, selectedAccount.Id, amount, selectedCategory.Id, description);
+            var request = new OperationApplyRequest(type, selectedAccount.Id, amount, selectedCategory.Id, description.Trim());
 
             var result = _operationFacade.Apply(request);
 

@@ -1,0 +1,10 @@
+Type,Id,Name,Balance,CategoryType,Amount,AccountId,CategoryId,Date,Description
+BankAccount,7b0548f1-0b74-48e5-9bf5-46fb42d1938d,Main,800,,,,,,
+BankAccount,798ad704-765f-46ed-8529-e4e03f493596,Additional,80000,,,,,,
+Category,ddd08bc1-a56c-4dd3-827c-370e78d2a67e,Зарплата,,Income,,,,,
+Category,39e225e0-fd1c-4c9d-b92d-1a3e4c980ee7,Стипендия,,Income,,,,,
+Category,32e44e2b-f4f6-4929-98be-8a3dbe6d4368,Продукты,,Expense,,,,,
+Category,0b1f382b-c67f-4b79-8630-35f3b382a1ac,Транспорт,,Expense,,,,,
+Operation,232e9920-52aa-4100-8dfb-22f9f8c6395e,,,Income,2100,7b0548f1-0b74-48e5-9bf5-46fb42d1938d,39e225e0-fd1c-4c9d-b92d-1a3e4c980ee7,2025-11-04 15:01:15,
+Operation,7bb198f8-f6ce-439e-9a4a-a5903990ef5b,,,Expense,1300,7b0548f1-0b74-48e5-9bf5-46fb42d1938d,0b1f382b-c67f-4b79-8630-35f3b382a1ac,2025-11-04 15:01:29,
+Operation,2ccf4532-8323-479a-be00-564c5b4459f5,,,Income,80000,798ad704-765f-46ed-8529-e4e03f493596,ddd08bc1-a56c-4dd3-827c-370e78d2a67e,2025-11-04 15:02:05,

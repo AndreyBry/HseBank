@@ -10,19 +10,33 @@ using Microsoft.Extensions.Logging;
 
 namespace HseBank.src.Application.Facades
 {
+    /// <summary>
+    /// Фасад для работы с банковскими счетами.
+    /// </summary>
     public class BankAccountFacade : IBankAccountFacade
     {
         private ILogger<BankAccountFacade> _logger;
         private ICommandFactory _commandFactory;
         private ICommandManager _commandManager;
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="logger">Логгер.</param>
+        /// <param name="commandFactory">Фабрика команд.</param>
+        /// <param name="commandManager">Менеджер команд.</param>
         public BankAccountFacade(ILogger<BankAccountFacade> logger, ICommandFactory commandFactory, ICommandManager commandManager)
         {
             _logger = logger;
             _commandFactory = commandFactory;
             _commandManager = commandManager;
         }
-
+        
+        /// <summary>
+        /// Метод для создания счета.
+        /// </summary>
+        /// <param name="request">ДТО с данными для создания.</param>
+        /// <returns>Результат, содержащий статус выполнения и сообщение.</returns>
         public OperationResult Create(BankAccountCreateRequest request)
         {
             ICommand command = _commandFactory.CreateBankAccountCommand(request);
@@ -44,6 +58,10 @@ namespace HseBank.src.Application.Facades
             }
         }
 
+        /// <summary>
+        /// Метод для получения всех счетов.
+        /// </summary>
+        /// <returns>Результат, содержащий статус выполнения, все счета и сообщение.</returns>
         public OperationResult<IEnumerable<BankAccount>> GetAll()
         {
             var command = _commandFactory.GetAllBankAccountsCommand();
@@ -59,6 +77,12 @@ namespace HseBank.src.Application.Facades
             }
         }
 
+        /// <summary>
+        /// Метод для изменения названия счета.
+        /// </summary>
+        /// <param name="oldName">Название счета, которое нужно изменить.</param>
+        /// <param name="newName">Новое название.</param>
+        /// <returns>Результат, статус выполнения и сообщение.</returns>
         public OperationResult ChangeName(string oldName, string newName)
         {
             ICommand command = _commandFactory.ChangeBankAccountNameCommand(oldName, newName);
@@ -80,6 +104,11 @@ namespace HseBank.src.Application.Facades
             }
         }
 
+        /// <summary>
+        /// Метод для удаления счета.
+        /// </summary>
+        /// <param name="id">Айди счета.</param>
+        /// <returns>Результат, содержащий статус выполнения и сообщение.</returns>
         public OperationResult Delete(Guid id)
         {
             ICommand command = _commandFactory.DeleteBankAccountCommand(id);

@@ -1,5 +1,4 @@
-﻿using HseBank.src.Application.Facades;
-using HseBank.src.Domain.Enums;
+﻿using HseBank.src.Domain.Enums;
 using HseBank.src.Domain.Interfaces.Facades;
 using HseBank.src.Domain.Interfaces.Menus;
 using HseBank.src.Domain.Models.DTOs;
@@ -7,15 +6,25 @@ using Spectre.Console;
 
 namespace HseBank.src.UserInterface.Menus
 {
+    /// <summary>
+    /// Меню для работы с категориями.
+    /// </summary>
     public class CategoryMenu : MenuExtensions, ICategoryMenu
     {
         private ICategoryFacade _categoryFacade;
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="categoryFacade">Фасад категорий.</param>
         public CategoryMenu(ICategoryFacade categoryFacade)
         {
             _categoryFacade = categoryFacade;
         }
 
+        /// <summary>
+        /// Вывод меню и выбор действия.
+        /// </summary>
         public void Show()
         {
             var choice = AnsiConsole.Prompt(
@@ -46,6 +55,9 @@ namespace HseBank.src.UserInterface.Menus
             }
         }
 
+        /// <summary>
+        /// Запуск процесса создания категории.
+        /// </summary>
         public void CreateCategory()
         {
             AnsiConsole.MarkupLine("[yellow]➕ СОЗДАНИЕ КАТЕГОРИИ[/]");
@@ -58,7 +70,7 @@ namespace HseBank.src.UserInterface.Menus
             var type = typeChoice == "📈 Доход" ? TransactionType.Income : TransactionType.Expense;
             var name = AnsiConsole.Ask<string>("[white]Название категории:[/]");
 
-            var result = _categoryFacade.Create(new CategoryCreateRequest(type, name));
+            var result = _categoryFacade.Create(new CategoryCreateRequest(type, name.Trim()));
 
             if (result.IsSuccess)
             {
@@ -72,6 +84,9 @@ namespace HseBank.src.UserInterface.Menus
             WaitForKey();
         }
 
+        /// <summary>
+        /// Запуск процесса изменения названия категории.
+        /// </summary>
         public void ChangeCategoryName()
         {
             var categoriesResult = _categoryFacade.GetAll();
@@ -96,7 +111,7 @@ namespace HseBank.src.UserInterface.Menus
 
             var name = AnsiConsole.Ask<string>("[white]Название категории:[/]");
 
-            var result = _categoryFacade.ChangeName(choice, name);
+            var result = _categoryFacade.ChangeName(choice, name.Trim());
             if (result.IsSuccess)
             {
                 AnsiConsole.MarkupLine("[green]✓ Название категории изменено![/]");
@@ -109,6 +124,9 @@ namespace HseBank.src.UserInterface.Menus
             WaitForKey();
         }
 
+        /// <summary>
+        /// Запуск процесса удаления категории.
+        /// </summary>
         public void DeleteCategory()
         {
             var categoriesResult = _categoryFacade.GetAll();
@@ -151,6 +169,9 @@ namespace HseBank.src.UserInterface.Menus
             WaitForKey();
         }
 
+        /// <summary>
+        /// Отображение всех категорий.
+        /// </summary>
         public void ShowCategories()
         {
             var result = _categoryFacade.GetAll();

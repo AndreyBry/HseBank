@@ -3,23 +3,44 @@ using Spectre.Console;
 
 namespace HseBank.src.UserInterface.Menus
 {
+    /// <summary>
+    /// Основной меню.
+    /// </summary>
     public class MainMenu : IMenu
     {
         private IBankAccountMenu _bankAccountMenu;
         private ICategoryMenu _categoryMenu;
         private IOperationMenu _operationMenu;
         private IMetricsMenu _metricsMenu;
+        private IImportMenu _importMenu;
+        private IExportMenu _exportMenu;
         private IUndoRedoMenu _undoRedoMenu;
 
-        public MainMenu(IBankAccountMenu bankAccountMenu, ICategoryMenu categoryMenu, IOperationMenu operationMenu, IMetricsMenu metricsMenu, IUndoRedoMenu undoRedoMenu)
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="bankAccountMenu">Меню для работы с банковскими счетами.</param>
+        /// <param name="categoryMenu">Меню для работы с категориями.</param>
+        /// <param name="operationMenu">Меню для работы с операциями.</param>
+        /// <param name="metricsMenu">Меню для работы с метриками.</param>
+        /// <param name="importMenu">Меню для импорта данных.</param>
+        /// <param name="exportMenu">Меню для экспорта данных.</param>
+        /// <param name="undoRedoMenu">Меню для работы с историей команд.</param>
+        public MainMenu(IBankAccountMenu bankAccountMenu, ICategoryMenu categoryMenu, IOperationMenu operationMenu, 
+            IMetricsMenu metricsMenu, IImportMenu importMenu, IExportMenu exportMenu, IUndoRedoMenu undoRedoMenu)
         {
             _bankAccountMenu = bankAccountMenu;
             _categoryMenu = categoryMenu;
             _operationMenu = operationMenu;
             _metricsMenu = metricsMenu;
+            _importMenu = importMenu;
+            _exportMenu = exportMenu;
             _undoRedoMenu = undoRedoMenu;
         }
 
+        /// <summary>
+        /// Вывод меню и выбор действия или подменю.
+        /// </summary>
         public void Show()
         {
             while (true)
@@ -41,6 +62,8 @@ namespace HseBank.src.UserInterface.Menus
                             "💰 Управление счетами",
                             "📂 Управление категориями",
                             "💳 Операции (доход/расход)",
+                            "📥 Импорт данных",
+                            "📤 Экспорт данных",
                             "📊 Метрики производительности",
                             "↩️ Отменить последнее действие",
                             "🔁 Повторить отмененное действие",
@@ -60,6 +83,12 @@ namespace HseBank.src.UserInterface.Menus
                         break;
                     case "📊 Метрики производительности":
                         _metricsMenu.Show();
+                        break;
+                    case "📥 Импорт данных":
+                        _importMenu.Show();
+                        break;
+                    case "📤 Экспорт данных":
+                        _exportMenu.Show();
                         break;
                     case "↩️ Отменить последнее действие":
                         _undoRedoMenu.UndoLastAction();

@@ -5,15 +5,25 @@ using Spectre.Console;
 
 namespace HseBank.src.UserInterface.Menus
 {
+    /// <summary>
+    /// Меню для работы с банковскими счетами.
+    /// </summary>
     public class BankAccountMenu : MenuExtensions, IBankAccountMenu
     {
         private IBankAccountFacade _bankAccountFacade;
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="bankAccountFacade">Фасад банковских счетов.</param>
         public BankAccountMenu(IBankAccountFacade bankAccountFacade)
         {
             _bankAccountFacade = bankAccountFacade;
         }
 
+        /// <summary>
+        /// Вывод меню и выбор действия.
+        /// </summary>
         public void Show()
         {
             var choice = AnsiConsole.Prompt(
@@ -44,13 +54,16 @@ namespace HseBank.src.UserInterface.Menus
             }
         }
 
+        /// <summary>
+        /// Запуск процесса создания банковского счета.
+        /// </summary>
         public void CreateBankAccount()
         {
             AnsiConsole.MarkupLine("[yellow]➕ СОЗДАНИЕ СЧЕТА[/]");
 
             var name = AnsiConsole.Ask<string>("[white]Название счета:[/]");
 
-            var result = _bankAccountFacade.Create(new BankAccountCreateRequest(name));
+            var result = _bankAccountFacade.Create(new BankAccountCreateRequest(name.Trim()));
 
             if (result.IsSuccess)
             {
@@ -64,6 +77,9 @@ namespace HseBank.src.UserInterface.Menus
             WaitForKey();
         }
 
+        /// <summary>
+        /// Запуск процесса изменения названия банковского счета.
+        /// </summary>
         public void ChangeBankAccountName()
         {
             var accountsResult = _bankAccountFacade.GetAll();
@@ -88,7 +104,7 @@ namespace HseBank.src.UserInterface.Menus
 
             var name = AnsiConsole.Ask<string>("[white]Название счета:[/]");
 
-            var result = _bankAccountFacade.ChangeName(choice, name);
+            var result = _bankAccountFacade.ChangeName(choice, name.Trim());
             if (result.IsSuccess)
             {
                 AnsiConsole.MarkupLine("[green]✓ Название счета изменено![/]");
@@ -101,6 +117,9 @@ namespace HseBank.src.UserInterface.Menus
             WaitForKey();
         }
 
+        /// <summary>
+        /// Запуск процесса удаления банковского счета.
+        /// </summary>
         public void DeleteBankAccount()
         {
             var accountsResult = _bankAccountFacade.GetAll();
@@ -143,6 +162,9 @@ namespace HseBank.src.UserInterface.Menus
             WaitForKey();
         }
 
+        /// <summary>
+        /// Отображение всех банковских счетов.
+        /// </summary>
         public void ShowBankAccounts()
         {
             var result = _bankAccountFacade.GetAll();

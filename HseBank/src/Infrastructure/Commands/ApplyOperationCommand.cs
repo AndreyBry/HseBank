@@ -7,6 +7,9 @@ using HseBank.src.Domain.Models.DTOs;
 
 namespace HseBank.src.Infrastructure.Commands
 {
+    /// <summary>
+    /// Команда для создания и выполнения операции по счету.
+    /// </summary>
     public class ApplyOperationCommand : ICommand
     {
         private OperationApplyRequest _request;
@@ -15,6 +18,13 @@ namespace HseBank.src.Infrastructure.Commands
         private IBankAccountRepository _bankAccountRepository;
         private Operation? _operation;
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="request">ДТО с необходимыми для создания и выполнения операции данными.</param>
+        /// <param name="operationFactory">Фабрика операций.</param>
+        /// <param name="operationRepository">Репозиторий операций.</param>
+        /// <param name="bankAccountRepository">Репозиторий банковских счетов.</param>
         public ApplyOperationCommand(OperationApplyRequest request, IOperationFactory operationFactory, 
             IOperationRepository operationRepository, IBankAccountRepository bankAccountRepository)
         {
@@ -24,6 +34,9 @@ namespace HseBank.src.Infrastructure.Commands
             _bankAccountRepository = bankAccountRepository;
         }
 
+        /// <summary>
+        /// Создание, сохранение в репозитории и выполнение операции по счету.
+        /// </summary>
         public void Execute()
         {
             _operation = _operationFactory.Create(_request);
@@ -38,6 +51,9 @@ namespace HseBank.src.Infrastructure.Commands
             }
         }
 
+        /// <summary>
+        /// Удаление операции и выполнение обратной операции по счету.
+        /// </summary>
         public void Undo()
         {
             if (_operation is not null)

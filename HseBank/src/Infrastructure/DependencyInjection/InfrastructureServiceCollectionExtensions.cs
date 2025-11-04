@@ -8,8 +8,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HseBank.src.Infrastructure.DependencyInjection
 {
+    /// <summary>
+    /// Класс, содержащий расширения для IServiceCollection.
+    /// </summary>
     public static class InfrastructureServiceCollectionExtensions
     {
+        /// <summary>
+        /// Метод-расширение для регистрации в DI репозиториев, фабрик и валидаторов.
+        /// </summary>
+        /// <param name="services">Service Collection.</param>
+        /// <returns>Service Collection.</returns>
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
             // Репозитории

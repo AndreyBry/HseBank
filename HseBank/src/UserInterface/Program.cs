@@ -5,8 +5,15 @@ using HseBank.src.UserInterface.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text;
 
+/// <summary>
+/// Класс программы.
+/// </summary>
 public class Program
 {
+    /// <summary>
+    /// Точка входа в программу.
+    /// </summary>
+    /// <param name="args">Аргумента, передаваемые при запуске проекта.</param>
     public static void Main(string[] args)
     {
         Console.OutputEncoding = Encoding.UTF8;
@@ -16,6 +23,10 @@ public class Program
         mainMenu.Show();
     }
 
+    /// <summary>
+    /// Метод для настройки DI.
+    /// </summary>
+    /// <returns>Service Provider.</returns>
     static IServiceProvider SetupDependencyInjection()
     {
         var services = new ServiceCollection();
@@ -24,5 +35,5 @@ public class Program
         services.AddUserInterfaceServices();
         var provider = services.BuildServiceProvider();
         return provider;
-    } 
+    }
 }

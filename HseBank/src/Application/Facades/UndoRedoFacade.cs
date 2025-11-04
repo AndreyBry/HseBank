@@ -5,17 +5,29 @@ using Microsoft.Extensions.Logging;
 
 namespace HseBank.src.Application.Facades
 {
+    /// <summary>
+    /// Фасад для отмены последнего действия и повтора отмененного действия.
+    /// </summary>
     public class UndoRedoFacade : IUndoRedoFacade
     {
         private ILogger<UndoRedoFacade> _logger;
         private ICommandManager _commandManager;
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="logger">Логгер.</param>
+        /// <param name="commandManager">Менеджер команд.</param>
         public UndoRedoFacade(ILogger<UndoRedoFacade> logger, ICommandManager commandManager)
         {
             _logger = logger;
             _commandManager = commandManager;
         }
 
+        /// <summary>
+        /// Метод для отмены последнего действия.
+        /// </summary>
+        /// <returns>Результат, содержащий статус выполнения и сообщение.</returns>
         public OperationResult Undo()
         {
             if(!_commandManager.CanUndo)
@@ -34,6 +46,10 @@ namespace HseBank.src.Application.Facades
             }
         }
 
+        /// <summary>
+        /// Метод для повтора отмененного действия.
+        /// </summary>
+        /// <returns>Результат, содержащий статус выполнения и сообщение.</returns>
         public OperationResult Redo()
         {
             if(!_commandManager.CanRedo)
